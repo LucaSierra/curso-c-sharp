@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Calculadora
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Digite o primeiro número "); //int.Parse só converte conteúdo vindo de string
+            int numero1 = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a operação: ");
+            string operacao = Console.ReadLine();
+
+            Console.WriteLine("Digite o segundo número ");
+            int numero2 = int.Parse(Console.ReadLine());  //Console.Redkey Obtém o próximo caractere ou tecla de função pressionada pelo usuário. A tecla pressionada é exibida na janela do console.
+
+            int resultado = 0;
+
+            switch (operacao)
+            {
+                case "+":
+                    resultado = numero1 + numero2;
+                    break;
+                case "-":
+                    resultado = numero1 - numero2;
+                    break;
+                case "x":
+                    resultado = numero1 * numero2;
+                    break;
+                case "/":
+                    resultado = numero1 / numero2;
+                    break;
+            }
+                //0 = primeiro numero, 1 = primeiro numero, 2= segundo numero, 3 = resultado;
+            Console.WriteLine("{0} {1} {2} = {3}", numero1, operacao, numero2, resultado);
+
+            Console.ReadKey();
