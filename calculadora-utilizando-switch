@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace Calculadora
 {
     class Program
@@ -35,8 +40,17 @@ namespace Calculadora
                 case "/":
                     resultado = numero1 / numero2;
                     break;
+                default
+                    Console.WriteLine("Erro!");
+                    break;
             }
-                //0 = primeiro numero, 1 = primeiro numero, 2= segundo numero, 3 = resultado;
+            //0 = primeiro numero, 1 = primeiro numero, 2= segundo numero, 3 = resultado;
             Console.WriteLine("{0} {1} {2} = {3}", numero1, operacao, numero2, resultado);
 
             Console.ReadKey();
+
+
+
+        }
+    }
+}
