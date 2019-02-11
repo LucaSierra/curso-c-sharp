@@ -29,6 +29,8 @@ namespace Calculadora
                 resultado = numero1 * numero2;
             else if (operacao == "/")
                 resultado = numero1 / numero2;
+            else
+                Console.WriteLine("Erro de operação");
             //ELSE IF - nasce a partir de um IF inicial ou outro ELSE IF, realiza um teste lógico, resultado é sempre um booleano
 
 
