@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Calculadora
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Digite o primeiro número "); //int.Parse só converte conteúdo vindo de string
+            int numero1 = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a operação: ");
+            string operacao = Console.ReadLine();
+
+            Console.WriteLine("Digite o segundo número ");
+            int numero2 = int.Parse(Console.ReadLine());  //Console.Redkey Obtém o próximo caractere ou tecla de função pressionada pelo usuário. A tecla pressionada é exibida na janela do console.
+
+            int resultado = 0;
+
+            if (operacao == "+")
+                resultado = numero1 + numero2;
+            else if (operacao == "-")
+                resultado = numero1 - numero2;
+            else if (operacao == "x")
+                resultado = numero1 * numero2;
+            else if (operacao == "/")
+                resultado = numero1 / numero2;
+            //ELSE IF - nasce a partir de um IF inicial ou outro ELSE IF, realiza um teste lógico, resultado é sempre um booleano
+
+
+            //0 = primeiro numero, 1 = primeiro numero, 2= segundo numero, 3 = resultado;
+            Console.WriteLine("{0} {1} {2} = {3}", numero1, operacao, numero2, resultado);
+
+            Console.ReadKey();
+
+
+        }
+    }
+}
