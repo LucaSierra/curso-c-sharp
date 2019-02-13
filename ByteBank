@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _04_ByteBank
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ContaCorrente contaDoLucas = new ContaCorrente();
+
+            contaDoLucas.titular = "Lucas";
+
+            Console.Write(contaDoLucas.saldo);
+            bool resultadoSaque = contaDoLucas.Sacar(500);
+
+            Console.WriteLine(resultadoSaque);
+            Console.WriteLine(contaDoLucas.saldo);
+
+            contaDoLucas.Depositar(500);
+            Console.WriteLine(contaDoLucas.saldo);
+
+
+            ContaCorrente contaDoGabriel = new ContaCorrente();
+
+            contaDoGabriel.titular = "Gabriel";
+
+            Console.WriteLine("Saldo do Lucas: " + contaDoLucas.saldo);
+            Console.WriteLine("Saldo do Gabriel: " + contaDoGabriel.saldo);
+
+
+            bool resultadoTransferencia = contaDoLucas.Transferir(200, contaDoGabriel);
+
+            Console.WriteLine("Saldo do Lucas: " + contaDoLucas.saldo);
+            Console.WriteLine("Saldo do Gabriel: " + contaDoGabriel.saldo);
+
+            Console.WriteLine("Resultado da Transferencia: " + resultadoTransferencia);
+
+            contaDoGabriel.Transferir(100, contaDoLucas);
+
+            Console.WriteLine("Saldo do Lucas: " + contaDoLucas.saldo);
+            Console.WriteLine("Saldo do Gabriel: " + contaDoGabriel.saldo);
+
+
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+public class ContaCorrente
+{
+    public string titular;
+    public int agencia;
+    public int numero;
+    public double saldo = 100;
+
+    // bool retorna false ou true
+    public bool Sacar(double valor)
+    {
+        if (this.saldo < valor)
+        {
+            return false;
+        }
+        else
+        {
+            this.saldo -= valor;
+            return true;
+        }
+    }
+
+    // void quando não a retorno
+    public void Depositar(double valor)
+    {
+        this.saldo += valor;
+    }
+
+    public bool Transferir(double valor, ContaCorrente contaDestino)
+    {
+        if(this.saldo < valor)
+        {
+            return false;
+        }
+        else
+        {
+            this.saldo -= valor;
+            contaDestino.Depositar(valor);
+            return true;
+        }
+    }
+
+
+
+}
