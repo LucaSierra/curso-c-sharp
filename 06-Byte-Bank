@@ -1,0 +1,147 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _06_ByteBank
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ContaCorrente conta = new ContaCorrente();
+            Cliente cliente = new Cliente();
+
+            cliente.Nome = "Lucas";
+            cliente.CPF = "466.799.978-01";
+            cliente.Profissao = "Desenvolvedor";
+
+            conta.Saldo =-10;
+            conta.Titular = cliente;
+
+            Console.WriteLine(conta.Titular.Nome);
+            Console.WriteLine(conta.Saldo);
+
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _06_ByteBank
+{
+    public class Cliente
+    {
+        private string _cpf;
+
+
+        public string Nome { get; set; }
+        public string CPF
+        {
+            get
+            {
+                return _cpf;
+            }
+            set
+            {
+                // Escrevo minha lógica de validação de CPF
+                _cpf = value;
+            }
+        }
+
+        public string Profissao { get; set; }
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+//using _05_ByteBank;
+
+namespace _06_ByteBank
+{
+    public class ContaCorrente
+    {
+        private Cliente _titular;
+
+        public Cliente Titular { get; set; }
+        public int Agencia { get; set; }
+        public int Numero { get; set; }
+        private double _saldo = 100;
+
+        public double Saldo
+        {
+            get
+            {
+                return _saldo;
+            }
+            set
+            {
+
+                if (value < 0)
+                {
+                    return;
+                }
+                else
+                {
+                    _saldo = value;
+                }
+            }
+        }
+
+        // bool retorna false ou true
+        public bool Sacar(double valor)
+        {
+            if (this._saldo < valor)
+            {
+                return false;
+            }
+            else
+            {
+                this._saldo -= valor;
+                return true;
+            }
+        }
+
+        // void quando não a retorno
+        public void Depositar(double valor)
+        {
+            this._saldo += valor;
+        }
+
+        public bool Transferir(double valor, ContaCorrente contaDestino)
+        {
+            if (this._saldo < valor)
+            {
+                return false;
+            }
+            else
+            {
+                this._saldo -= valor;
+                contaDestino.Depositar(valor);
+                return true;
+            }
+        }
+
+
+
+    }
+}
