@@ -1,0 +1,111 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _05_ByteBank
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Cliente lucas = new Cliente();
+
+            lucas.nome = "Lucas";
+            lucas.profissao = "Desenvolvedor C#";
+            lucas.cpf = "466.799.978-01";
+
+            ContaCorrente conta = new ContaCorrente();
+
+            conta.titular = lucas;
+            conta.saldo = 500;
+            conta.agencia = 563;
+            conta.numero = 5634527;
+
+            Console.WriteLine(lucas.nome);
+            Console.WriteLine(conta.titular.nome);
+
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
+
+Classe client
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _05_ByteBank
+{
+    public class Cliente
+    {
+        public string nome;
+        public string cpf;
+        public string profissao;
+    }
+}
+
+
+
+
+//using _05_ByteBank;
+
+namespace _05_ByteBank
+{
+    public class ContaCorrente
+    {
+        public Cliente titular;
+        public int agencia;
+        public int numero;
+        public double saldo = 100;
+
+        // bool retorna false ou true
+        public bool Sacar(double valor)
+        {
+            if (this.saldo < valor)
+            {
+                return false;
+            }
+            else
+            {
+                this.saldo -= valor;
+                return true;
+            }
+        }
+
+        // void quando não a retorno
+        public void Depositar(double valor)
+        {
+            this.saldo += valor;
+        }
+
+        public bool Transferir(double valor, ContaCorrente contaDestino)
+        {
+            if (this.saldo < valor)
+            {
+                return false;
+            }
+            else
+            {
+                this.saldo -= valor;
+                contaDestino.Depositar(valor);
+                return true;
+            }
+        }
+
+
+
+    }
+}
+
+
+
+
+
