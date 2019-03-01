@@ -1,0 +1,172 @@
+using ByteBank01;
+using ByteBank01.Funcionarios;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace ByteBank
+{
+    class Program
+    {
+
+        static void Main(string[] args)
+        {
+            CalcularBonificacao();
+            Console.ReadLine();
+        }
+
+        public static void CalcularBonificacao()
+        {
+            GerenciadorBonificacao gerenciadorBonificacao = new GerenciadorBonificacao();
+
+            Designer robson = new Designer("234.456.765-08");
+            robson.Nome = "Robson";
+
+            Diretor dimas = new Diretor("456.765.998-91");
+            dimas.Nome = "Dimas";
+
+            Auxiliar alan = new Auxiliar("132.876.999-02");
+            alan.Nome = "Alan";
+
+            GerenteDeConta amanda = new GerenteDeConta("567.998.098-11");
+            amanda.Nome = "Amanda";
+
+            Desenvolvedor lucas = new Desenvolvedor("466.799.978-01");
+            lucas.Nome = "Lucas";
+
+            gerenciadorBonificacao.Registrar(robson);
+            gerenciadorBonificacao.Registrar(dimas);
+            gerenciadorBonificacao.Registrar(alan);
+            gerenciadorBonificacao.Registrar(amanda);
+            gerenciadorBonificacao.Registrar(lucas);
+
+            Console.WriteLine("Total de bonificações do mês " + gerenciadorBonificacao.GetTotalBonificacao());
+        }
+    }
+}
+/////////////////////////////////////////////////////////////////////////////
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01.Funcionarios
+{
+    public class Auxiliar : Funcionario
+    {
+        public Auxiliar(string cpf) : base(2000, cpf)
+        {
+            Console.WriteLine("Criando Auxiliar");
+        }
+
+        public override void AumentarSalario()
+        {
+            Salario *= 1.1;
+        }
+
+        public override double GetBonificacao()
+        {
+            return Salario * 0.2;
+        }
+
+    }
+}
+
+//////////////////////////////////////////////////////////////////
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01.Funcionarios
+{
+    public abstract class Funcionario
+    {
+        // 0 - Funcionario
+        // 1 - Diretor
+        // 2 - Design
+        // 3 -Gerente conta corrente
+        // 4 - Coordenador
+
+        public static int TotalDeFuncionarios { get; private set; }
+        
+        public string Nome { get; set; }
+        public string CPF { get; private set; }
+        public double Salario { get; protected set; }
+
+        public Funcionario(double salario, string cpf)
+        {
+            CPF = cpf;
+            Salario = salario;
+
+            TotalDeFuncionarios++;
+
+        }
+
+        public abstract void AumentarSalario();
+
+        public abstract double GetBonificacao();
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01.Funcionarios
+{
+   public  class Diretor : Funcionario
+   {
+        public Diretor (string cpf) : base(5000, cpf)
+        {
+            Console.WriteLine("Criando DIRETOR");
+        }
+
+        public override void AumentarSalario()
+        {
+            Salario *= 1.15;
+        }
+
+        public override double GetBonificacao()
+        {
+            return Salario * 0.5;
+        }
+    }
+}
+
+////////////////////////////////
+using ByteBank01.Funcionarios;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01
+{
+   
+    public class GerenciadorBonificacao
+    {
+        private double _totalBonificacao;
+
+        public void Registrar(Funcionario funcionario)
+        {
+            _totalBonificacao += funcionario.GetBonificacao();
+        }
+
+        public double GetTotalBonificacao()
+        {
+            return _totalBonificacao;
+        }
+    }
+}
