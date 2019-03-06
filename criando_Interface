@@ -1,0 +1,235 @@
+using ByteBank01;
+using ByteBank01.Funcionarios;
+using ByteBank01.Sistemas;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace ByteBank
+{
+    class Program
+    {
+
+        static void Main(string[] args)
+        {
+            //CalcularBonificacao();
+
+            UsarSistema();
+
+            Console.ReadLine();
+        }
+
+        public static void UsarSistema()
+        {
+            SistemaInterno sistemaInterno = new SistemaInterno();
+
+            Diretor dimas = new Diretor("456.765.998-91");
+            dimas.Nome = "Dimas";
+            dimas.Senha = "123";
+
+            GerenteDeConta amanda = new GerenteDeConta("567.998.098-11");
+            amanda.Nome = "Amanda";
+            amanda.Senha = "abc";
+
+            ParceiroComercial parceiro = new ParceiroComercial();
+            parceiro.Senha = "321";
+
+            sistemaInterno.Logar(dimas, "123");
+            sistemaInterno.Logar(amanda, "abc");
+            sistemaInterno.Logar(parceiro, "321");
+
+        }
+
+        public static void CalcularBonificacao()
+        {
+            GerenciadorBonificacao gerenciadorBonificacao = new GerenciadorBonificacao();
+
+            Designer robson = new Designer("234.456.765-08");
+            robson.Nome = "Robson";
+
+            Diretor dimas = new Diretor("456.765.998-91");
+            dimas.Nome = "Dimas";
+
+            Auxiliar alan = new Auxiliar("132.876.999-02");
+            alan.Nome = "Alan";
+
+            GerenteDeConta amanda = new GerenteDeConta("567.998.098-11");
+            amanda.Nome = "Amanda";
+
+            Desenvolvedor lucas = new Desenvolvedor("466.799.978-01");
+            lucas.Nome = "Lucas";
+
+            gerenciadorBonificacao.Registrar(robson);
+            gerenciadorBonificacao.Registrar(dimas);
+            gerenciadorBonificacao.Registrar(alan);
+            gerenciadorBonificacao.Registrar(amanda);
+            gerenciadorBonificacao.Registrar(lucas);
+
+            Console.WriteLine("Total de bonificações do mês " + gerenciadorBonificacao.GetTotalBonificacao());
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using ByteBank01.Sistemas;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01
+{
+    public class ParceiroComercial : IAutenticavel
+    {
+        public string Senha { get; set; }
+        public bool Autenticar (string senha)
+        {
+            return Senha == senha;
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+using ByteBank01.Sistemas;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01.Funcionarios
+{
+    public abstract class FuncionarioAutenticavel : Funcionario, IAutenticavel
+    {
+        public string Senha { get; set; }
+
+        public FuncionarioAutenticavel(double salario, string cpf)
+            : base(salario, cpf)
+        {
+
+        }
+
+        public bool Autenticar(string senha)
+        {
+            return Senha == senha;
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+using ByteBank01.Funcionarios;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01.Sistemas
+{
+    public interface IAutenticavel
+    {
+        bool Autenticar(string senha);
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+using ByteBank01.Funcionarios;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01.Sistemas
+{
+    public class SistemaInterno
+    {
+        public bool Logar(IAutenticavel funcionario, string senha)
+        {
+            bool usuarioAutenticado = funcionario.Autenticar(senha);
+
+            if (usuarioAutenticado)
+            {
+                Console.WriteLine("Bem-vindo ao sistema!");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Senha incorreta!");
+                return false;
+            }
+
+        }
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+
+using ByteBank01.Sistemas;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01.Funcionarios
+{
+   public class GerenteDeConta : FuncionarioAutenticavel
+    {
+        public GerenteDeConta (string cpf) : base(4000, cpf)
+        {
+            Console.WriteLine("Criando Gerente de Conta");
+        }
+
+        public override void AumentarSalario()
+        {
+            Salario *= 1.05;
+        }
+
+        public override double GetBonificacao()
+        {
+            return Salario * 0.25;
+        }
+
+    }
+}
+
+///////////////////////////////////////////////////////////////////
+
+using ByteBank01.Sistemas;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank01.Funcionarios
+{
+   public  class Diretor : FuncionarioAutenticavel
+   {
+        public Diretor (string cpf) : base(5000, cpf)
+        {
+            Console.WriteLine("Criando DIRETOR");
+        }
+
+        public override void AumentarSalario()
+        {
+            Salario *= 1.15;
+        }
+
+        public override double GetBonificacao()
+        {
+            return Salario * 0.5;
+        }
+    }
+}
+//////////////////////////////
