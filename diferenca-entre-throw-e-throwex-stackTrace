@@ -1,0 +1,250 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            try
+            {
+                ContaCorrente conta1 = new ContaCorrente(123, 4656543);
+                ContaCorrente conta2 = new ContaCorrente(233, 5355552);
+
+                //conta1.Transferir(10000, conta2);
+                conta1.Sacar(10000);
+            }
+            catch(OperacaoFinanceiraException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+
+                //Console.WriteLine("Informações da INNER EXCEPTION (exceção interna):");
+
+            }
+
+            Console.WriteLine("Execução finalizada. recle enter para sair");
+            Console.ReadLine();
+        }
+
+        // Teste com a cadeia de chamada:
+        // Metodo -> TestaDivisao -> Dividir
+        private static void Metodo()
+        {
+            TestaDivisao(2);
+        }
+
+        private static void TestaDivisao(int divisor)
+        {
+            try
+            {
+                Dividir(10, divisor);            
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine("Fui capturado pelo (NullReferenceException ex)");
+                Console.WriteLine(ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fui capturado pelo (Exception ex)");
+                Console.WriteLine(ex.StackTrace);
+            }
+        }
+        
+     
+
+        private static int Dividir(int numero, int divisor)
+        {
+            try
+            {
+                return numero / divisor;
+            }
+            catch (DivideByZeroException)
+            {
+                Console.WriteLine("Exceção com numero=" + numero + " e divisor=" + divisor);
+                throw;
+                //Console.WriteLine("Código depois do throw");
+            }
+        }
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank
+{
+    public class ContaCorrente
+    {
+        public static double TaxaOperacao { get; private set; }
+
+        public static int TotalDeContasCriadas { get; private set; }
+
+        public Cliente Titular { get; set; }
+
+        public int ContadorSaqueasNaoPermitidos { get; private set; }
+        public int ContadorTransferenciasNaoPermitidas { get; private set; }
+
+        public int Numero { get; }
+        public int Agencia { get; }
+
+        private double _saldo = 100;
+        public double Saldo
+        {
+            get
+            {
+                return _saldo;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    return;
+                }
+
+                _saldo = value;
+            }
+        }
+
+        public ContaCorrente(int numeroAgencia, int numeroConta)
+        {
+            if(numeroAgencia <= 0)
+            {
+                throw new ArgumentException("O Argumento agencia deve ser maior que 0.", nameof(numeroAgencia));
+            }
+
+            if(numeroConta <= 0)
+            {
+                throw new ArgumentException("O argumento numero deve ser maior que 0.",nameof(numeroConta));
+            }
+
+            Agencia = numeroAgencia;
+            Numero = numeroConta;
+
+            TotalDeContasCriadas++;
+            TaxaOperacao = 30 / TotalDeContasCriadas;
+        }
+
+        public void Sacar(double valor)
+        {
+            if (valor < 0)
+            {
+                throw new ArgumentException("Valor invalido para o saque. ", nameof (valor));
+            }
+
+            if (_saldo < valor)
+            {
+                ContadorSaqueasNaoPermitidos++;
+                throw new SaldoInsuficienteException(Saldo, valor);
+            }
+
+            _saldo -= valor;
+            
+        }
+
+        public void Depositar(double valor)
+        {
+            _saldo += valor;
+        }
+
+        public void Transferir(double valor, ContaCorrente contaDestino)
+        {
+            if (valor < 0)
+            {
+                throw new ArgumentException("Valor invalido para transferencia. ", nameof(valor));
+            }
+            try
+            {
+                Sacar(valor);
+            }
+            catch(SaldoInsuficienteException ex)
+            {
+                ContadorTransferenciasNaoPermitidas++;
+                throw new OperacaoFinanceiraException("Operação não realizada.", ex);
+            }
+            
+            contaDestino.Depositar(valor);
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank
+{
+    
+    public class SaldoInsuficienteException : OperacaoFinanceiraException
+    {
+        public double Saldo { get; }
+        public double ValorSaque { get; }
+
+        public SaldoInsuficienteException()
+        {
+
+        }
+
+        public SaldoInsuficienteException(double saldo, double valorSaque)
+            : this("Tentativa de saque no valor de " + valorSaque + " conta com saldo de " + saldo)
+        {
+            Saldo = saldo;
+            ValorSaque = valorSaque;
+        }
+
+        public SaldoInsuficienteException(string mensagem)
+            :base(mensagem)
+        {   
+        }
+
+        public SaldoInsuficienteException(string mensagem, Exception excecaoInterna)
+            : base (mensagem, excecaoInterna)
+        {
+
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank
+{
+    public class OperacaoFinanceiraException : Exception
+    {
+        public OperacaoFinanceiraException()
+        {
+
+        }
+
+        public OperacaoFinanceiraException(string mensagem)
+            : base(mensagem)
+        {
+
+        }
+
+        public OperacaoFinanceiraException(string mensagem, Exception excecaoInterna)
+            : base(mensagem,excecaoInterna)
+        {
+
+        }
+    }
+}
