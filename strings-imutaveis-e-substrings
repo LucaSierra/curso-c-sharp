@@ -1,0 +1,28 @@
+using ByteBank.Modelos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bytebank.SistemaInterno
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // pagina?argumentos
+            // 123456789
+
+
+            string url = "pagina?argumentos";
+
+            Console.WriteLine(url);
+            string argumentos = url.Substring(7);
+            Console.WriteLine(argumentos);
+            
+
+            Console.ReadLine();
+        }
+    }
+}
