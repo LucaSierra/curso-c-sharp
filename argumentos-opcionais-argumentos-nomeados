@@ -1,0 +1,136 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using ByteBank.Modelos;
+using ByteBank.Modelos.Funcionarios;
+
+namespace ByteBank.SistemaAgencia
+{
+    class Program
+    {
+
+        static void Main(string[] args)
+        {
+            ListaDeContaCorrente lista = new ListaDeContaCorrente();
+
+            lista.Adicionar(new ContaCorrente(876, 2537734));
+            lista.Adicionar(new ContaCorrente(876, 2537745));
+            lista.Adicionar(new ContaCorrente(876, 2537798));
+
+
+            Console.ReadLine();
+        }
+
+        static void TestaArrayDeContaCorrente()
+        {
+            ContaCorrente[] contas = new ContaCorrente[]
+            {
+                new ContaCorrente(234, 5638222),
+                new ContaCorrente(234, 8723625),
+                new ContaCorrente(243, 2323323)
+            };
+
+            for (int indice = 0; indice < contas.Length; indice++)
+            {
+                Console.WriteLine($"Conta {indice} {contas[indice].Numero}");
+            }
+        }
+
+        static void TestaArrayInt()
+        {
+            // ARRAY de inteiros, com 5 posições;
+
+            int[] idades = new int[5];
+
+            idades[0] = 15;
+            idades[1] = 28;
+            idades[2] = 35;
+            idades[3] = 50;
+            idades[4] = 28;
+
+            Console.WriteLine(idades.Length);
+
+            int acumulador = 0;
+            for (int indice = 0; indice < idades.Length; indice++)
+            {
+                int idade = idades[indice];
+
+                Console.WriteLine($"Acessando o array idades no indice {indice}");
+                Console.WriteLine($"Valor de idade[{indice}] = {idade}");
+
+                acumulador += idade;
+            }
+
+            int media = acumulador / idades.Length;
+            Console.WriteLine($"Média de idades = {media}");
+
+            Console.ReadLine();
+        }
+
+    }
+
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+using ByteBank.Modelos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank.SistemaAgencia
+{
+    public class ListaDeContaCorrente
+    {
+
+
+        private int _proximaPosicao;
+        private ContaCorrente[] _itens;
+
+        public ListaDeContaCorrente(int capacidadeInicial = 5)
+        {
+            _itens = new ContaCorrente[capacidadeInicial];
+            _proximaPosicao = 0;
+        }
+
+
+        public void Adicionar(ContaCorrente item)
+        {
+            VerificaCapacidade(_proximaPosicao + 1);
+
+            Console.WriteLine($"Adicionando item na posição{_proximaPosicao}");
+            _itens[_proximaPosicao] = item;
+            _proximaPosicao++;
+        }
+
+        private void VerificaCapacidade(int tamanhoNecessario)
+        {
+            if(_itens.Length >= tamanhoNecessario)
+            {
+                return;
+            }
+
+            int novoTamanho = _itens.Length * 2;
+            if(novoTamanho < tamanhoNecessario)
+            {
+                novoTamanho = tamanhoNecessario;
+            }
+
+            ContaCorrente[] novoArray = new ContaCorrente[novoTamanho];
+
+            for(int indice = 0; indice < _itens.Length; indice++)
+            {
+                novoArray[indice] = _itens[indice];
+            }
+
+            _itens = novoArray;
+        }
+
+    }
+}
