@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBank.Modelos
+{
+    public class Cliente
+    {
+        public string Nome { get; set; }
+        public string CPF { get; set; }
+        public string Profissao { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            //Cliente outroCliente = obj as Cliente;
+            Cliente outroCliente = obj as Cliente;
+
+            if(outroCliente == null)
+            {
+                return false;
+            }
+
+            return CPF == outroCliente.CPF;
+                
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////
+
+  Cliente carlos = new Cliente();
+            carlos.Nome = "Carlos";
+            carlos.CPF = "142.234.211-00";
+            carlos.Profissao = "Designer";
+
+            Cliente carlos_2 = new Cliente();
+            carlos_2.Nome = "Carlos";
+            carlos_2.CPF = "142.234.211-00";
+            carlos_2.Profissao = "Designer";
+
+            ContaCorrente conta_2 = new ContaCorrente(432, 54252);
+
+
+            if (carlos.Equals(conta_2))
+            {
+                Console.WriteLine("São Iguais");
+            }
+            else
+            {
+                Console.WriteLine("Não são iguais");
+            }
