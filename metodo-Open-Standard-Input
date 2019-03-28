@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ByteBankImportacaoExportacao
+{
+    partial class Program
+    {
+        static void UsarStreamDeEntrada()
+        {
+            using (var fluxoDeEntrada = Console.OpenStandardInput())
+            using (var fs = new FileStream("entradaConsole.txt", FileMode.Create))
+            {
+                var buffer = new byte[1024]; // 1 kb
+
+                while (true)
+                {
+                    var bytesLidos = fluxoDeEntrada.Read(buffer, 0, 1024);
+
+                    fs.Write(buffer, 0, bytesLidos);
+                    fs.Flush();
+
+                    Console.WriteLine($"Bytes lidos da console: {bytesLidos}");
+                }
+            }
+        }
+
+
+
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+using ByteBankImportacaoExportacao.Modelos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using System.IO; // IO = Input e Output
+using System.Globalization;
+
+namespace ByteBankImportacaoExportacao 
+{ 
+    partial class Program 
+    { 
+        static void Main(string[] args) 
+        {
+            File.WriteAllText("escrevendoComAClasseFile.txt", "Testando File.WriteAllText");
+
+            Console.WriteLine("Arquivo escrevendoComAClasseFile criado!");
+
+            var bytesArquivo = File.ReadAllBytes("contas.txt");
+            Console.WriteLine($"Arquivo contas.txt possui {bytesArquivo.Length} bytes");
+
+
+
+
+            var linhas = File.ReadAllLines("contas.txt");
+            Console.WriteLine(linhas.Length);
+
+            foreach (var linha in linhas)
+            {
+                Console.WriteLine(linha);
+            }
+
+            Console.ReadLine();
+
+
+
+
+
+
+
+            Console.WriteLine("Digite o seu nome:");
+            var nome = Console.ReadLine();
+
+            Console.WriteLine(nome);
+
+
+            UsarStreamDeEntrada();
+            
+            Console.WriteLine("Aplicação finalizada. . .");
+
+
+            Console.ReadLine();
+        }
+    }
+} 
+ 
