@@ -1,0 +1,64 @@
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Alura.Loja.Testes.ConsoleApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            using (var contexto = new LojaContext())
+            {
+                var produtos = contexto.Produtos.ToList();
+
+                ExibeEntries(contexto.ChangeTracker.Entries());
+
+                var NovoProduto = new Produto()
+                {
+                    Nome = "Desinfetante",
+                    Categoria = "Limpeza",
+                    Preco = 2.99
+                };
+
+                contexto.Produtos.Add(NovoProduto);
+                
+
+                ExibeEntries(contexto.ChangeTracker.Entries());
+
+                contexto.SaveChanges();
+            }
+        }
+
+        private static void ExibeEntries(IEnumerable<EntityEntry> entries)
+        {
+            foreach (var e in entries)
+            {
+
+                Console.WriteLine(e.Entity.ToString() + "-" + e.State);
+            }
+        }
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+namespace Alura.Loja.Testes.ConsoleApp
+{
+    public class Produto
+    {
+        public int Id { get; internal set; }
+        public string Nome { get; internal set; }
+        public string Categoria { get; internal set; }
+        public double Preco { get; internal set; }
+
+        public override string ToString()
+        {
+            return $"Produto :  {this.Id}, {this.Categoria}, {this.Preco}";
+        }
+    }
+}
