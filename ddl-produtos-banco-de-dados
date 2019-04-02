@@ -1,0 +1,24 @@
+CREATE TABLE [dbo].[Produtos] (
+    [Id]        INT            IDENTITY (1, 1) NOT NULL,
+    [Nome]      NVARCHAR (MAX) NULL,
+    [Categoria] NVARCHAR (MAX) NULL,
+    [Preco]     FLOAT (53)     NULL,
+    CONSTRAINT [PK_Produtos] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+using Microsoft.EntityFrameworkCore;
+using System;
+
+namespace Alura.Loja.Testes.ConsoleApp
+{
+    public class LojaContext : DbContext
+    {
+        public DbSet<Produto> Produtos { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=LojaDB;Trusted_Connection=true;");
+        }
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
