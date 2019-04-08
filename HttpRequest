@@ -1,0 +1,8 @@
+A classe HttpRequest possui várias informações sobre a requisição enviada pelo cliente, a saber:
+
+dados do formulário, caso exista
+dados da query string, caso exista
+dados do cabeçalho da requisição
+dados sobre cookies da requisição
+qual método HTTP foi utilizado
+se a requisição é segura ou não
